@@ -14,11 +14,27 @@ console.log('after')
 //   console.log(commits)
 // }
 
-getUser(1)
-  .then(user => getRepository(user.gitHUbUsername))
-  .then(repos => getCommits(repos[0]))
-  .then(commits => console.log('Commits', commits))
-  .catch(error => console.log('Error', error.message))
+// getUser(1)
+//   .then(user => getRepository(user.gitHUbUsername))
+//   .then(repos => getCommits(repos[0]))
+//   .then(commits => console.log('Commits', commits))
+//   .catch(error => console.log('Error', error.message))
+
+// Async and Await approach
+async function displayCommits(){
+  try{
+    const user = await getUser(1)
+    const repos = await getRepository(user.gitHUbUsername)
+    const commits = await getCommits(repos[0])
+    console.log(commits)
+  }
+  catch(err){
+    console.log('Error', err.message)
+  }
+}
+
+displayCommits()
+
 
 function getUser(id){
   return new Promise((resolve, reject) => {
@@ -34,7 +50,8 @@ function getRepository(username){ // async func that take a callback and return 
   return new Promise((resolve, reject) => {
     setTimeout(()=> {
       console.log('Reading Github API...')
-      resolve(['repo1', 'repo2', 'repo3'])
+      // resolve(['repo1', 'repo2', 'repo3'])
+      reject(new Error('could not get the repos'))
     }, 2000)
   })
 }
